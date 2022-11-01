@@ -87,11 +87,15 @@ class ToDoButtons:
             ordered_bool = True
             if list_size != 0:
                 for i in range(list_size):
+                    item = i + 1
+                    str_item = str(item)
                     line = self.gui_obj.list.todo_list.get(i)
-                    if int(line[0]) == i + 1:
+                    if int(line[0]) == item:
+                        continue
+                    elif len(str_item) > 1 and line[0].isdigit() and line[1] == str_item[1]:
                         continue
                     else:
-                        list_id = i + 1
+                        list_id = item
                         ordered_bool = False
                         break
                 if ordered_bool:
@@ -110,7 +114,10 @@ class ToDoButtons:
         lines_selected = self.gui_obj.list.todo_list.curselection()
         for item in lines_selected:
             line_text = self.gui_obj.list.todo_list.get(item)
-            delete_id = line_text[0]
+            if line_text[0].isdigit() and not line_text[1].isdigit():
+                delete_id = line_text[0]
+            else:
+                delete_id = line_text[0:2]
             self.gui_obj.todo_obj.api_patch_request(delete_id)
         self.refresh()
     
