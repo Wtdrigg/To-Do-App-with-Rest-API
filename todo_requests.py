@@ -11,7 +11,7 @@ class RequestsToDo:
     # PythonAnywhere.com. If you are instead running the API on localhost, this URI will need to be changed
     # to 'http://127.0.0.1:5000'
     def __init__(self):
-        self.url = 'https://wtdrigg.pythonanywhere.com/todo'
+        self.url = 'http://wtdrigg.pythonanywhere.com/todo'
 
     # Takes a provided integer and string and converts them into JSON format. The JSON data is then 
     # sent in a put request to the API, and will be added to the database.
