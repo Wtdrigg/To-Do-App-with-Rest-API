@@ -27,15 +27,6 @@ class ToDoModel(db.Model):
     todo = db.Column(db.String(100), nullable=False)
 
 
-# **IMPORTANT** 
-# The db.create_all() method creates the database and must be run the first time the API is activated. On all subsequent 
-# activations this should be either deleted or commented out, otherwise it will overwrite your previous database
-# with a new blank database.
-
-# with app.app_context():
-#    db.create_all()
-
-
 # This class is used to parse through the packages received via HTTP and structures them in JSON format
 # for easy reading later.
 class ArgumentParser:
@@ -94,5 +85,11 @@ api.add_resource(TodoResource, "/todo")
 
 if __name__ == '__main__':
 
-    # Runs the API 
-    app.run(host='0.0.0.0')
+    # **IMPORTANT**
+    # The db.create_all() method creates the database and must be run the first time the API is activated.
+    # On all subsequent activations this should be either deleted or commented out, otherwise it will overwrite your
+    # previous database contents with a new blank database.
+    with app.app_context():
+        db.create_all()
+
+    app.run()
