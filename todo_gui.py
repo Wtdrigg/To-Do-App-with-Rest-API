@@ -4,6 +4,7 @@ import tkinter as tk
 This file contains all of the classes and methods used to build the todo app GUI.
 """
 
+
 class ToDoGUI:
 
     # Constructor builds all required objects and sets the root object parameters.
@@ -12,6 +13,7 @@ class ToDoGUI:
         self.root = tk.Tk()
         self.root.geometry('400x500')
         self.root.title('My To-Do List')
+        # noinspection PyTypeChecker
         self.root.resizable(height='False', width='False')
         self.frames = ToDoFrames(self)
         self.list = ToDoList(self)
@@ -20,7 +22,8 @@ class ToDoGUI:
         self.buttons = ToDoButtons(self)
         self.buttons.refresh()
         self.root.mainloop()
-    
+
+
 class ToDoFrames:
 
     # Constructor builds the upper and lower frame widgets and places them within the root.
@@ -31,6 +34,7 @@ class ToDoFrames:
         self.lower_frame = tk.Frame(self.gui_obj.root, bd=5)
         self.lower_frame.place(anchor='nw', width=400, height=200, x=0, y=300)
 
+
 class ToDoList:
 
     # Constructor builds the listbox widget and places it within the upper frame.
@@ -39,13 +43,15 @@ class ToDoList:
         self.todo_list = tk.Listbox(self.gui_obj.frames.upper_frame, height=200, width=200)
         self.todo_list.place(anchor='nw', width=390, height=275, x=0, y=25)
 
+
 class ToDoEntryBox:
 
-    # Constructor builds the entrybox widget and places it within the lower frame.
+    # Constructor builds the entry box widget and places it within the lower frame.
     def __init__(self, gui_obj):
         self.gui_obj = gui_obj
         self.entry_box = tk.Entry(self.gui_obj.frames.lower_frame, width=25)
         self.entry_box.place(anchor='sw', x=25, y=100)
+
 
 class ToDoLabels:
 
@@ -57,19 +63,24 @@ class ToDoLabels:
         self.list_label = tk.Label(self.gui_obj.frames.upper_frame, text='My To-Do List')
         self.list_label.place(anchor='n', x=195, y=0)
 
+
 class ToDoButtons:
 
     # Constructor builds the button widgets and places them within the upper and lower frames.
     def __init__(self, gui_obj):
-        self.gui_obj =gui_obj
-        self.submit_button = tk.Button(self.gui_obj.frames.lower_frame, text='SUBMIT', height=1, width=10, command=self.press_submit)
+        self.gui_obj = gui_obj
+        self.submit_button = tk.Button(self.gui_obj.frames.lower_frame, text='SUBMIT', height=1, width=10,
+                                       command=self.press_submit)
         self.submit_button.place(anchor='sw', x=225, y=102)
-        self.delete_button = tk.Button(self.gui_obj.frames.lower_frame, text= 'DELETE', height=1, width=10, command=self.press_delete)
+        self.delete_button = tk.Button(self.gui_obj.frames.lower_frame, text='DELETE', height=1, width=10,
+                                       command=self.press_delete)
         self.delete_button.place(anchor='sw', x=225, y=142)
 
-    # function is called with the submit button is clicked. This determines and saves the lowest unused ID number, and also
-    # saves the data in the entry box. This info is then sent to the API via put request, which will save it to the database.
+    # function is called with the submit button is clicked. This determines and saves the lowest unused ID number,
+    # and also saves the data in the entry box. This info is then sent to the API via put request, which will
+    # save it to the database.
     def press_submit(self):
+        list_id = 0
         todo_text = self.gui_obj.entry.entry_box.get()
         if len(todo_text) != 0:
             list_size = self.gui_obj.list.todo_list.size()
@@ -85,8 +96,6 @@ class ToDoButtons:
                         break
                 if ordered_bool:
                     list_id = list_size + 1
-                else:
-                    ordered_bool = True
             else:
                 list_id = 1
             self.gui_obj.entry.entry_box.delete(0, 'end')
@@ -105,7 +114,7 @@ class ToDoButtons:
             self.gui_obj.todo_obj.api_patch_request(delete_id)
         self.refresh()
     
-    # Sends a get request to the API, and updates the lisbox to display the data that is recieved.
+    # Sends a get request to the API, and updates the listbox to display the data that is received.
     def refresh(self):
         list_size = self.gui_obj.list.todo_list.size()
         self.gui_obj.list.todo_list.delete(0, list_size)
